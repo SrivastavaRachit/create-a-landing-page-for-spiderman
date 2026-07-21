@@ -1,0 +1,1738 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spider-Man — Friendly Neighborhood Hero</title>
+  
+  <!-- Google Fonts: Bangers for comic-style headings, Montserrat for clean modern body text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* --- DESIGN SYSTEM & VARIABLES --- */
+    :root {
+      --primary: #e23636;       /* Spidey Red */
+      --accent: #518cca;        /* Spidey Blue */
+      --accent-bright: #00d2ff; /* Web-Shooter Neon Blue */
+      --bg: #0b0c10;            /* Near Black */
+      --bg-soft: #151821;       /* Slightly lighter dark for cards */
+      --bg-card: #1f2330;       /* Card background */
+      --ink: #ffffff;           /* Pure White */
+      --muted: #a0aec0;         /* Cool Gray */
+      --radius: 0.75rem;
+      --radius-lg: 1.25rem;
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.5);
+      --shadow: 0 12px 40px -12px rgba(226, 54, 54, 0.3);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* --- BASE STYLES --- */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--ink);
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Bangers', cursive;
+      letter-spacing: 1.5px;
+      font-weight: normal;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1.05;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-shadow: 3px 3px 0px var(--primary);
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+      text-shadow: 2px 2px 0px var(--primary);
+    }
+
+    p {
+      font-size: 1rem;
+      color: var(--muted);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* --- REUSABLE COMPONENTS --- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section-intro {
+      text-align: center;
+      max-width: 650px;
+      margin: 0 auto 3.5rem auto;
+    }
+
+    .section-intro p {
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.85rem 1.75rem;
+      font-family: 'Bangers', cursive;
+      font-size: 1.25rem;
+      letter-spacing: 1px;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      text-transform: uppercase;
+      min-height: 48px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #b31e1e);
+      color: var(--ink);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -10px rgba(226, 54, 54, 0.5);
+      filter: brightness(1.1);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--ink);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: var(--accent-bright);
+      transform: translateY(-2px);
+    }
+
+    /* Icon Badge */
+    .icon-badge {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      background: rgba(226, 54, 54, 0.15);
+      border: 1px solid rgba(226, 54, 54, 0.3);
+      color: var(--primary);
+      margin-bottom: 1.25rem;
+    }
+
+    /* --- STICKY NAVBAR --- */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 12, 16, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 1rem 0;
+    }
+
+    header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Bangers', cursive;
+      font-size: 1.75rem;
+      color: var(--ink);
+      letter-spacing: 1px;
+    }
+
+    .logo span {
+      color: var(--primary);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      padding: 0.5rem 0.75rem;
+    }
+
+    nav a:hover, nav a.active {
+      color: var(--primary);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn-nav-signin {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .btn-nav-signin:hover {
+      color: var(--ink);
+    }
+
+    .btn-nav-signup {
+      padding: 0.5rem 1.25rem;
+      font-size: 1rem;
+    }
+
+    /* --- HERO SECTION --- */
+    .hero {
+      position: relative;
+      padding: clamp(4rem, 10vw, 7rem) 0;
+      overflow: hidden;
+      background: radial-gradient(circle at 80% 20%, rgba(81, 140, 202, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 20% 80%, rgba(226, 54, 54, 0.1) 0%, transparent 50%);
+    }
+
+    /* Web pattern overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent-bright);
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      margin: 1.5rem 0 2.5rem 0;
+      color: var(--muted);
+      max-width: 540px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-trust {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .hero-trust span {
+      color: var(--accent-bright);
+      font-weight: 600;
+    }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-visual-bg {
+      position: absolute;
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle, rgba(226, 54, 54, 0.2) 0%, transparent 70%);
+      z-index: 1;
+      filter: blur(20px);
+    }
+
+    .hero-image-wrapper {
+      position: relative;
+      z-index: 2;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      border: 3px solid rgba(226, 54, 54, 0.3);
+      transform: rotate(-2deg);
+      transition: var(--transition);
+    }
+
+    .hero-image-wrapper:hover {
+      transform: rotate(0deg) scale(1.02);
+      border-color: var(--accent-bright);
+    }
+
+    /* --- STATS BAND --- */
+    .stats-band {
+      background: var(--bg-soft);
+      border-y: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 3rem 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .stat-item h3 {
+      font-size: 3.5rem;
+      color: var(--primary);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+    }
+
+    .stat-item p {
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      color: var(--muted);
+    }
+
+    /* --- SUITS SECTION (CORE GRID) --- */
+    .suits-section {
+      padding: clamp(4rem, 8vw, 6rem) 0;
+    }
+
+    .suits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .suit-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .suit-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--primary);
+      box-shadow: var(--shadow);
+    }
+
+    .suit-img-wrapper {
+      position: relative;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .suit-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .suit-card:hover .suit-img-wrapper img {
+      transform: scale(1.05);
+    }
+
+    .suit-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(11, 12, 16, 0.85);
+      backdrop-filter: blur(4px);
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-bright);
+      border: 1px solid rgba(0, 210, 255, 0.3);
+      text-transform: uppercase;
+    }
+
+    .suit-info {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .suit-info h3 {
+      font-size: 1.75rem;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+
+    .suit-info p {
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+
+    .suit-tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: auto;
+    }
+
+    .tech-tag {
+      font-size: 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      color: var(--muted);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* --- VILLAINS SECTION (FEATURES) --- */
+    .villains-section {
+      padding: clamp(4rem, 8vw, 6rem) 0;
+      background: var(--bg-soft);
+      position: relative;
+    }
+
+    .villains-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .villain-card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .villain-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary);
+      opacity: 0;
+      transition: var(--transition);
+    }
+
+    .villain-card:hover {
+      transform: translateX(4px);
+      border-color: rgba(226, 54, 54, 0.2);
+    }
+
+    .villain-card:hover::before {
+      opacity: 1;
+    }
+
+    .villain-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .villain-header img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+    }
+
+    .villain-title h3 {
+      font-size: 1.75rem;
+      color: var(--ink);
+    }
+
+    .villain-title span {
+      font-size: 0.8rem;
+      color: var(--primary);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .threat-meter {
+      margin-top: 1.5rem;
+    }
+
+    .threat-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .threat-bar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .threat-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #ff6b6b);
+      border-radius: 3px;
+    }
+
+    /* --- TECH & GADGETS (HOW IT WORKS) --- */
+    .tech-section {
+      padding: clamp(4rem, 8vw, 6rem) 0;
+    }
+
+    .tech-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+      position: relative;
+    }
+
+    .tech-step {
+      background: var(--bg-card);
+      padding: 2.5rem 2rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+    }
+
+    .step-number {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      font-family: 'Bangers', cursive;
+      font-size: 3rem;
+      color: rgba(255, 255, 255, 0.05);
+      line-height: 1;
+    }
+
+    .tech-step h3 {
+      font-size: 1.75rem;
+      margin-bottom: 0.75rem;
+      color: var(--ink);
+    }
+
+    .tech-step p {
+      font-size: 0.95rem;
+    }
+
+    /* --- QUOTES (TESTIMONIALS) --- */
+    .quotes-section {
+      padding: clamp(4rem, 8vw, 6rem) 0;
+      background: var(--bg-soft);
+    }
+
+    .quotes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .quote-card {
+      background: var(--bg-card);
+      padding: 2.5rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .quote-text {
+      font-style: italic;
+      color: var(--ink);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .quote-text::before {
+      content: '“';
+      font-family: 'Bangers', cursive;
+      font-size: 4rem;
+      color: rgba(226, 54, 54, 0.2);
+      position: absolute;
+      top: -2rem;
+      left: -1rem;
+    }
+
+    .quote-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .quote-author img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .author-info h4 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+
+    .author-info p {
+      font-size: 0.8rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* --- CTA BAND --- */
+    .cta-band {
+      background: linear-gradient(135deg, var(--primary), #7a1212);
+      padding: 5rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-band::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+      pointer-events: none;
+    }
+
+    .cta-band .container {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+    }
+
+    .cta-band h2 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      margin-bottom: 1rem;
+      text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.4);
+    }
+
+    .cta-band p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .cta-band .btn {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .cta-band .btn:hover {
+      transform: translateY(-2px);
+      background: #f0f0f0;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    }
+
+    /* --- JOIN FORM (CONTACT) --- */
+    .join-section {
+      padding: clamp(4rem, 8vw, 6rem) 0;
+    }
+
+    .join-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .join-info h2 {
+      text-align: left;
+      margin-bottom: 1.5rem;
+    }
+
+    .join-info p {
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+
+    .contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .contact-item .icon-badge {
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+
+    .contact-text h4 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--ink);
+    }
+
+    .contact-text p {
+      font-size: 0.85rem;
+      margin-bottom: 0;
+    }
+
+    .join-form-wrapper {
+      background: var(--bg-soft);
+      padding: 3rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .join-form-wrapper h3 {
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius);
+      color: var(--ink);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba(226, 54, 54, 0.25);
+    }
+
+    .join-form-wrapper .btn {
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    /* --- AUTH CARDS (MODALS / PAGES) --- */
+    .auth-card {
+      max-width: 420px;
+      margin: 4rem auto;
+      padding: 2.5rem;
+      background: var(--bg-soft);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .auth-card h1 {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .auth-card p {
+      text-align: center;
+      font-size: 0.9rem;
+      margin-top: 1.5rem;
+    }
+
+    .auth-card p a {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .auth-card p a:hover {
+      color: var(--accent-bright);
+    }
+
+    /* --- FOOTER --- */
+    footer {
+      background: #06070a;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 5rem 0 2rem 0;
+    }
+
+    .foot-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 3rem;
+      align-items: start;
+      margin-bottom: 4rem;
+    }
+
+    .foot-brand {
+      grid-column: span 2;
+    }
+
+    .foot-brand p {
+      margin-top: 1rem;
+      max-width: 300px;
+      font-size: 0.9rem;
+    }
+
+    .foot-col h4 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--ink);
+      margin-bottom: 1.5rem;
+    }
+
+    .foot-col ul {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .foot-col ul a {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .foot-col ul a:hover {
+      color: var(--primary);
+      padding-left: 4px;
+    }
+
+    .foot-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .foot-bottom p {
+      font-size: 0.85rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: var(--transition);
+    }
+
+    .social-icon:hover {
+      background: var(--primary);
+      color: var(--ink);
+      transform: translateY(-3px);
+    }
+
+    /* --- RESPONSIVE BREAKPOINTS --- */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 1.25rem;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+      }
+
+      .hero-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-subtitle {
+        margin: 1.25rem auto 2rem auto;
+      }
+
+      .hero-image-wrapper {
+        transform: none;
+        max-width: 400px;
+      }
+
+      .hero-image-wrapper:hover {
+        transform: scale(1.02);
+      }
+
+      .join-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .join-info h2 {
+        text-align: center;
+      }
+
+      .contact-details {
+        align-items: center;
+      }
+
+      .foot-brand {
+        grid-column: span 1;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header nav {
+        display: none; /* Hide main nav links on tiny screens to save space, auth remains */
+      }
+
+      header .container {
+        justify-content: space-between;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+
+      .suits-grid, .villains-grid, .tech-steps, .quotes-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      .join-form-wrapper {
+        padding: 1.5rem;
+      }
+
+      footer .foot-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .foot-brand {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .foot-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    /* Page transition animation */
+    [data-page] {
+      animation: pageIn .3s ease;
+    }
+    @keyframes pageIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    [hidden] {
+      display: none !important;
+    }
+  </style>
+<style id="__mintsite_fix__">
+/* ── mintsite auto-fix: prevent overlapping + force responsiveness ── */
+*, *::before, *::after { box-sizing:border-box; }
+html, body { max-width:100% !important; overflow-x:hidden !important; margin:0 !important; padding-left:0 !important; padding-right:0 !important; }
+body { position:relative; }
+h1, h2, h3, h4, p, a, span, button, label { overflow-wrap:break-word !important; word-break:break-word; max-width:100%; }
+img, svg, video, iframe { max-width:100% !important; height:auto; display:block; }
+
+/* ── Defensive default-styles override — kicks in when the AI (especially
+   Groq's llama-3.3-70b) skips styling links and buttons. Keeps every site
+   looking polished even when the AI's CSS is thin. ── */
+
+/* Links: no default blue/underline anywhere. The AI almost never overrides
+   this for footer/secondary links, so it leaks browser defaults. */
+a { color:inherit !important; text-decoration:none !important; }
+a:hover { text-decoration:none; }
+
+/* Footer column links: ensure they're light-on-dark, no underline, soft hover. */
+footer a, [class*="footer"] a { color:rgba(255,255,255,.78) !important; transition:color .15s; }
+footer a:hover, [class*="footer"] a:hover { color:#fff !important; }
+
+/* Footer headings (column titles like "Browse" "Account" "Follow"): uppercase
+   eyebrow style so they don't look like raw h4s. */
+footer h3, footer h4, footer h5, [class*="footer"] h3, [class*="footer"] h4 {
+  font-size:.78rem !important; letter-spacing:.08em !important; text-transform:uppercase !important;
+  color:rgba(255,255,255,.55) !important; font-weight:600 !important; margin-bottom:1rem !important;
+}
+/* Footer list items: no bullet, tight spacing. */
+footer ul, [class*="footer"] ul { list-style:none !important; padding-left:0 !important; margin:0 !important; }
+footer ul li, [class*="footer"] ul li { padding:.3rem 0 !important; }
+
+/* Buttons: never the chrome-default look. Round + cursor + smooth transition.
+   Specific .add-to-cart styling lives below this. */
+button:not(.cart-icon):not(.__ms-hamburger):not(.__ms-x):not(.__ms-cart-checkout) {
+  cursor:pointer; border-radius:.5rem; font-family:inherit; transition:transform .15s, box-shadow .15s, background .15s;
+}
+
+/* .add-to-cart — primary CTA on product cards. AI usually forgets the
+   gradient + padding even when we ask for it. Force a baseline. */
+.add-to-cart, [data-add-to-cart] {
+  display:inline-flex !important; align-items:center !important; gap:.4rem !important;
+  padding:.6rem 1.1rem !important;
+  border-radius:.55rem !important;
+  background:linear-gradient(135deg, var(--primary, #1d4ed8), color-mix(in srgb, var(--primary, #1d4ed8) 72%, #000)) !important;
+  color:#fff !important; font-weight:600 !important; font-size:.88rem !important;
+  border:0 !important; cursor:pointer !important;
+  box-shadow:0 6px 18px -6px rgba(0,0,0,.25) !important;
+  transition:transform .15s, box-shadow .15s, filter .15s !important;
+}
+.add-to-cart:hover, [data-add-to-cart]:hover {
+  transform:translateY(-1px) !important; filter:brightness(1.08) !important;
+  box-shadow:0 10px 26px -6px rgba(0,0,0,.35) !important;
+}
+
+/* Product price tag — bold, accent color (not raw body text). */
+.price, .product-card .price, [class*="price-row"] .price {
+  font-size:1.1rem !important; font-weight:700 !important;
+  color:var(--primary, #1d4ed8) !important;
+}
+
+/* ── Form fields — the AI very often leaves inputs/textareas browser-default
+   (no border radius, labels inline). Give every form a clean baseline so
+   contact / sign-in / sign-up forms always look intentional. ── */
+form input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]),
+form textarea, form select {
+  display:block !important; width:100% !important; box-sizing:border-box !important;
+  padding:.7rem .9rem !important; margin-top:.35rem !important;
+  border:1px solid rgba(15,23,42,.16) !important; border-radius:.6rem !important;
+  background:#fff !important; color:#0f172a !important;
+  font-size:.95rem !important; font-family:inherit !important; line-height:1.4 !important;
+  transition:border-color .15s, box-shadow .15s !important;
+}
+form input::placeholder, form textarea::placeholder { color:#94a3b8 !important; }
+form input:focus, form textarea:focus, form select:focus {
+  outline:none !important; border-color:var(--primary,#6366f1) !important;
+  box-shadow:0 0 0 3px rgba(99,102,241,.18) !important;
+}
+form textarea { min-height:120px !important; resize:vertical !important; }
+form label {
+  display:block !important; margin-top:.9rem !important; margin-bottom:.1rem !important;
+  font-size:.85rem !important; font-weight:600 !important; color:#334155 !important;
+}
+/* Submit buttons inside forms get the primary look if the AI under-styled them. */
+form button[type="submit"], form .btn-primary {
+  display:inline-flex !important; align-items:center !important; justify-content:center !important;
+  gap:.4rem !important; margin-top:1.1rem !important;
+  padding:.75rem 1.4rem !important; border:0 !important; border-radius:.6rem !important;
+  background:linear-gradient(135deg, var(--primary,#1d4ed8), color-mix(in srgb, var(--primary,#1d4ed8) 72%, #000)) !important;
+  color:#fff !important; font-weight:600 !important; font-size:.95rem !important; cursor:pointer !important;
+}
+
+/* Generic primary/ghost buttons + nav links the AI may have under-styled. */
+.btn-primary, [class*="btn-primary"] {
+  background:linear-gradient(135deg, var(--primary, #1d4ed8), color-mix(in srgb, var(--primary, #1d4ed8) 72%, #000)) !important;
+  color:#fff !important; padding:.7rem 1.4rem !important;
+  border-radius:.6rem !important; border:0 !important; font-weight:600 !important;
+}
+
+/* Lists rendered by the AI in the body should not be bullet-defaulted blue. */
+main ul:not([role]):not([class]), main ol:not([role]):not([class]) {
+  list-style:none !important; padding-left:0 !important;
+}
+.blob, [class*="blob"], [class*="gradient-orb"], [class*="bg-blur"] {
+  position:fixed !important; z-index:0 !important; opacity:.15 !important;
+  pointer-events:none !important; max-width:500px !important; max-height:500px !important;
+}
+section, main, .hero, [id="home"], [id="features"], [id="pricing"],
+[id="testimonials"], [id="faq"], [id="contact"], [id="about"],
+[id="cta"], [id="how-it-works"], article, .container {
+  position:relative; z-index:1; max-width:100%;
+}
+header, nav.nav, .navbar, [class*="header"], [class*="navbar"] {
+  position:sticky !important; top:0 !important; z-index:50 !important;
+  background:rgba(255,255,255,.92) !important; backdrop-filter:blur(12px) !important;
+  -webkit-backdrop-filter:blur(12px) !important;
+}
+.hero-card, [class*="hero-card"], [class*="hero-image"], [class*="hero-visual"] {
+  max-width:100% !important; overflow:hidden;
+}
+[class*="grid"] { max-width:100%; }
+
+/* ── Bulletproof card grids: never collapse so narrow that text wraps one
+   letter per line. auto-fit + minmax keeps each card >=240px and wraps to
+   fewer columns instead of squishing. Overrides brittle repeat(3,1fr). ── */
+.product-grid, [class*="product-grid"], .grid-2, .grid-3, .grid-4,
+[class*="grid-2"], [class*="grid-3"], [class*="grid-4"] {
+  display:grid !important;
+  grid-template-columns:repeat(auto-fit, minmax(min(100%, 240px), 1fr)) !important;
+  gap:1.5rem !important; align-items:stretch !important;
+}
+/* If a grid lands on a SECTION's container by mistake, force heading, intro AND
+   the card grid to span the full row so cards lay out properly. Scoped to
+   sections only — footers use .container too and must keep their columns. */
+section > h1, section > h2, section > h3, section > p, section > .product-grid,
+section .container > h1, section .container > h2, section .container > h3,
+section .container > p, section .container > .product-grid {
+  grid-column:1 / -1 !important;
+}
+/* Price + Add to Cart never break to one-letter-per-line. */
+.price, .add-to-cart, [data-add-to-cart] { white-space:nowrap !important; }
+
+/* Keep section padding sane — huge AI padding (6-8rem) leaves big empty gaps
+   between components. Hero keeps its own padding. */
+section:not(.hero):not([class*="hero"]):not([id="home"]):not([id="hero"]) {
+  padding-top:clamp(2.5rem, 5vw, 4rem) !important;
+  padding-bottom:clamp(2.5rem, 5vw, 4rem) !important;
+}
+
+/* Non-home page headers reuse .hero (a 2-column flex) → their heading/text
+   children squish into a narrow column. Let them wrap + span full row. */
+.hero > .container, .hero-content, .hero .container { flex-wrap:wrap; }
+.hero > .container > h1, .hero > .container > h2, .hero > .container > h3,
+.hero > .container > p, .hero > .container > span, .hero > .container > .eyebrow,
+.hero > .container > .btn, .hero > .container > .ctas, .hero > .container > a {
+  flex-basis:100% !important; max-width:100% !important;
+}
+/* CTA-band button stays readable (white pill + brand-colour text). */
+.cta-band .btn, .cta-band a.btn, .cta-band button,
+.cta-section .btn, .cta-section a.btn {
+  background:#fff !important; color:var(--primary, #1d4ed8) !important; border-color:#fff !important;
+}
+
+/* Auth cards: tighter margin, sensible heading size (the AI's big clamp wraps
+   "Create Your account" one word per line), and no tall forced min-height. */
+.auth-card, [class*="auth-card"] { margin:1.5rem auto !important; }
+.auth-card h1, .auth-card h2, [class*="auth-card"] h1, [class*="auth-card"] h2 {
+  font-size:clamp(1.4rem, 3.5vw, 2rem) !important; line-height:1.2 !important;
+}
+[id="signin"], [id="signup"], [id="login"],
+[data-page="signin"], [data-page="signup"] { min-height:auto !important; }
+footer, [class*="footer"] { position:relative !important; z-index:1; max-width:100%; }
+
+/* ── TABLET (≤768px): grids→1col, hero stacks, slightly smaller type ── */
+@media(max-width:768px) {
+  .container, [class*="container"] { padding-left:1rem !important; padding-right:1rem !important; }
+  .hero, [class*="hero-grid"], [id="home"] > div, [id="home"] > .container > div {
+    display:flex !important; flex-direction:column !important; gap:1.5rem !important;
+  }
+  .hero-card, [class*="hero-card"], [class*="hero-image"], [class*="hero-visual"] {
+    max-width:100% !important; margin:0 auto !important; width:100% !important;
+  }
+  [class*="grid-3"], [class*="grid-4"], .grid-3, .grid-4, .grid-2, [class*="grid-2"] {
+    grid-template-columns:1fr 1fr !important; gap:1rem !important;
+  }
+  h1 { font-size:clamp(1.6rem,5vw,2.4rem) !important; line-height:1.15 !important; }
+  h2 { font-size:clamp(1.3rem,4vw,1.9rem) !important; line-height:1.2 !important; }
+  h3 { font-size:1rem !important; }
+  p, .lead { font-size:.95rem !important; }
+  section { padding-top:2.5rem !important; padding-bottom:2.5rem !important; }
+  .auth-card, [class*="auth-card"] { max-width:100% !important; margin:2rem 1rem !important; padding:1.5rem !important; }
+}
+
+/* ── PHONE (≤480px): everything stacks single column, type shrinks more ── */
+@media(max-width:480px) {
+  .container, [class*="container"] { padding-left:.85rem !important; padding-right:.85rem !important; }
+  /* Header: stack logo + nav vertically, smaller logo, hamburger pattern */
+  header > div, header > nav, .nav > .inner, [class*="header"] > div {
+    flex-wrap:wrap !important; gap:.5rem !important; padding-top:.5rem !important; padding-bottom:.5rem !important;
+    height:auto !important; min-height:56px !important;
+  }
+  header nav, header .links, [class*="header"] nav, [class*="nav-links"] {
+    display:flex !important; flex-wrap:wrap !important; gap:.25rem !important; width:100%; justify-content:center;
+  }
+  header nav a, header .links a, [class*="nav-links"] a {
+    padding:.35rem .65rem !important; font-size:.82rem !important;
+  }
+  header .auth, [class*="auth-buttons"], [class*="header-auth"] {
+    margin-left:0 !important; gap:.3rem !important;
+  }
+  header .auth a, [class*="auth-buttons"] a {
+    padding:.4rem .75rem !important; font-size:.8rem !important;
+  }
+  .logo { font-size:.95rem !important; }
+  .cart-icon { padding:6px !important; font-size:18px !important; }
+  /* Hero: stack and shrink */
+  .hero, [class*="hero-grid"] { gap:1rem !important; padding-top:1.5rem !important; }
+  h1 { font-size:clamp(1.4rem,7vw,1.9rem) !important; }
+  h2 { font-size:clamp(1.15rem,5vw,1.5rem) !important; }
+  /* All grids collapse to single column */
+  [class*="grid-3"], [class*="grid-4"], .grid-3, .grid-4, .grid-2, [class*="grid-2"],
+  .product-grid, [class*="product-grid"] {
+    grid-template-columns:1fr !important; gap:1rem !important;
+  }
+  /* Buttons: full-width-ish, touch-friendly */
+  .btn-primary, .btn-ghost, button[type="submit"], .ctas a, .ctas button {
+    width:auto !important; min-height:44px !important; padding:.75rem 1.25rem !important; font-size:.9rem !important;
+  }
+  .ctas { flex-direction:column !important; gap:.6rem !important; width:100%; }
+  .ctas > * { width:100% !important; text-align:center; }
+  /* Product/feature cards tighter */
+  .product-card, .card, article {
+    padding:1rem !important;
+  }
+  .product-card img, .card img { aspect-ratio:1/1 !important; }
+  /* Footer: stack columns */
+  footer, [class*="footer"] {
+    text-align:center; padding-top:2rem !important; padding-bottom:1.5rem !important;
+  }
+  footer .foot-grid, footer [class*="foot-grid"], footer .columns {
+    grid-template-columns:1fr !important; gap:1.5rem !important;
+  }
+  footer .brand-block, footer [class*="brand-block"] {
+    margin:0 auto; max-width:280px;
+  }
+  /* Section padding shrinks more on phones */
+  section { padding-top:2rem !important; padding-bottom:2rem !important; }
+  /* Tables (if any) become scrollable */
+  table { display:block; overflow-x:auto; white-space:nowrap; }
+}
+
+/* ── Hard safety net: any element that's wider than viewport gets wrapped ── */
+@media(max-width:768px) {
+  body > * { max-width:100vw !important; }
+  pre, code { white-space:pre-wrap !important; word-break:break-word !important; }
+}
+</style>
+</head>
+<body>
+
+  <!-- --- NAVBAR --- -->
+  <header>
+    <div class="container">
+      <a href="#home" class="logo">
+        🕷️ <span>SPIDER</span>-MAN
+      </a>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#suits">Suits</a>
+        <a href="#villains">Villains</a>
+        <a href="#tech">Tech</a>
+        <a href="#join">Join Fan Club</a>
+      </nav>
+      <div class="header-actions">
+        <a href="#signin" class="btn-nav-signin">Sign In</a>
+        <a href="#signup" class="btn btn-primary btn-nav-signup">Sign Up</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- --- MAIN HOME PAGE --- -->
+  <main data-page="home" class="page-route">
+    
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <span class="hero-eyebrow">Friendly Neighborhood Hero</span>
+            <h1>Protecting the Streets of NYC</h1>
+            <p class="hero-subtitle">With great power comes great responsibility. Explore advanced nanotech suits, monitor active threats, and gear up to defend the city.</p>
+            <div class="hero-actions">
+              <a href="#suits" class="btn btn-primary">Explore Suits</a>
+              <a href="#join" class="btn btn-secondary">Join Web-Net</a>
+            </div>
+            <div class="hero-trust">
+              <span>⚡ Active Patrol Status:</span> 100% Secured &amp; Vigilant
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="hero-visual-bg"></div>
+            <div class="hero-image-wrapper">
+              <img src="https://images.unsplash.com/photo-1635805737707-575885ab0820?ixid=M3wxMDAzMDcxfDB8MXxzZWFyY2h8MXx8c3BpZGVybWFuJTIwY29zcGxheSUyMG1hcnZlbHxlbnwxfHx8fDE3ODQ2MTM1MzN8MA&ixlib=rb-4.1.0&w=800&h=600&fit=crop&q=80" alt="Spider-Man in action" onerror="this.onerror=null;this.src='https://picsum.photos/seed/spideyhero/600/600'">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Band -->
+    <section class="stats-band">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <h3>15+</h3>
+            <p>Advanced Suits Built</p>
+          </div>
+          <div class="stat-item">
+            <h3>400+</h3>
+            <p>Citizens Assisted</p>
+          </div>
+          <div class="stat-item">
+            <h3>10+</h3>
+            <p>Supervillains Contained</p>
+          </div>
+          <div class="stat-item">
+            <h3>100%</h3>
+            <p>Web-Fluid Capacity</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Suits Section (Core Grid) -->
+    <section id="suits" class="suits-section">
+      <div class="container">
+        <div class="section-intro">
+          <h2>The Armory</h2>
+          <p>Explore the specialized high-tech suits engineered to adapt to any threat level across Manhattan.</p>
+        </div>
+        <div class="suits-grid">
+          <!-- Suit 1 -->
+          <article class="suit-card">
+            <div class="suit-img-wrapper">
+              <span class="suit-badge">Classic</span>
+              <img src="https://images.unsplash.com/photo-1635805737707-575885ab0820?ixid=M3wxMDAzMDcxfDB8MXxzZWFyY2h8MXx8c3BpZGVybWFuJTIwY2xhc3NpYyUyMHN1aXR8ZW58MXx8fHwxNzg0NjEzNTM0fDA&ixlib=rb-4.1.0&w=800&h=600&fit=crop&q=80" alt="Classic Red & Blue Suit" onerror="this.onerror=null;this.src='https://picsum.photos/seed/classicsuit/600/600'">
+            </div>
+            <div class="suit-info">
+              <h3>Classic Red &amp; Blue</h3>
+              <p>The timeless standard. Features Stark-enhanced synthetic fabric and built-in underarm web wings for glide support.</p>
+              <div class="suit-tech-tags">
+                <span class="tech-tag">Web Wings</span>
+                <span class="tech-tag">HUD Display</span>
+              </div>
+            </div>
+          </article>
+          <!-- Suit 2 -->
+          <article class="suit-card">
+            <div class="suit-img-wrapper">
+              <span class="suit-badge">Advanced</span>
+              <img src="https://images.unsplash.com/photo-1712574784177-95e025a0762a?ixid=M3wxMDAzMDcxfDB8MXxzZWFyY2h8MXx8c3BpZGVybWFuJTIwaXJvbiUyMGFybW9yfGVufDF8fHx8MTc4NDYxMzUzNXww&ixlib=rb-4.1.0&w=800&h=600&fit=crop&q=80" alt="Iron Spider Armor" onerror="this.onerror=null;this.src='https://picsum.photos/seed/ironsuit/600/600'">
+            </div>
+            <div class="suit-info">
+              <h3>Iron Spider Armor</h3>
+              <p>Forged from advanced nanotechnology. Equipped with four mechanical spider-arms (waldoes) and bulletproof plating.</p>
+              <div class="suit-tech-tags">
+                <span class="tech-tag">Nanotech</span>
+                <span class="tech-tag">Waldoes</span>
+                <span class="tech-tag">Armor</span>
+              </div>
+            </div>
+          </article>
+          <!-- Suit 3 -->
+          <article class="suit-card">
+            <div class="suit-img-wrapper">
+              <span class="suit-badge">Covert</span>
+              <img src="https://loremflickr.com/600/600/spiderman,black,stealth?lock=104" alt="Stealth Noir Suit" onerror="this.onerror=null;this.src='https://picsum.photos/seed/stealthsuit/600/600'">
+            </div>
+            <div class="suit-info">
+              <h3>Stealth 'Noir' Suit</h3>
+              <p>Engineered for night operations. Features sound-dampening fabric and light-bending technology for absolute invisibility.</p>
+              <div class="suit-tech-tags">
+                <span class="tech-tag">Cloaking</span>
+                <span class="tech-tag">Silent Tread</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Villains Section (Features) -->
+    <section id="villains" class="villains-section">
+      <div class="container">
+        <div class="section-intro">
+          <h2>Active Threats</h2>
+          <p>Monitor high-priority targets currently tracked by the NYPD and the Web-Net database.</p>
+        </div>
+        <div class="villains-grid">
+          <!-- Villain 1 -->
+          <div class="villain-card">
+            <div class="villain-header">
+              <img src="https://images.unsplash.com/photo-1769733196040-adeb820c9f4a?ixid=M3wxMDAzMDcxfDB8MXxzZWFyY2h8MXx8Z29ibGluJTIwZ3JlZW4lMjB2aWxsYWlufGVufDF8fHx8MTc4NDYxMzUzNnww&ixlib=rb-4.1.0&w=800&h=600&fit=crop&q=80" alt="Green Goblin" onerror="this.onerror=null;this.src='https://picsum.photos/seed/goblin/150/150'">
+              <div class="villain-title">
+                <h3>Green Goblin</h3>
+                <span>Threat Level: Extreme</span>
+              </div>
+            </div>
+            <p>Norman Osborn's glider-riding alter ego. Uses high-tech explosive pumpkin bombs and a performance-enhancing serum.</p>
+            <div class="threat-meter">
+              <div class="threat-label">
+                <span>Destruction Index</span>
+                <span>95%</span>
+              </div>
+              <div class="threat-bar">
+                <div class="threat-fill" style="width: 95%;"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Villain 2 -->
+          <div class="villain-card">
+            <div class="villain-header">
+              <img src="https://images.unsplash.com/photo-1628944681206-2ee8d63b0a6b?ixid=M3wxMDAzMDcxfDB8MXxzZWFyY2h8MXx8b2N0b3B1cyUyMHNjaWVudGlzdCUyMHZpbGxhaW58ZW58MXx8fHwxNzg0NjEzNTM3fDA&ixlib=rb-4.1.0&w=800&h=600&fit=crop&q=80" alt="Doc Ock" onerror="this.onerror=null;this.src='https://picsum.photos/seed/docock/150/150'">
+              <div class="villain-title">
+                <h3>Doc Ock</h3>
+                <span>Threat Level: High</span>
+              </div>
+            </div>
+            <p>Dr. Otto Octavius. Armed with four highly advanced, telepathically controlled mechanical tentacles capable of crushing steel.</p>
+            <div class="threat-meter">
+              <div class="threat-label">
+                <span>Destruction Index</span>
+                <span>85%</span>
+              </div>
+              <div class="threat-bar">
+                <div class="threat-fill" style="width: 85%;"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Villain 3 -->
+          <div class="villain-card">
+            <div class="villain-header">
+              <img src="https://images.unsplash.com/photo-1564855101177-b3fac36e00e0?ixid=M3wxMDAzMDcxfDB8MXxzZWFyY2h8MXx8dmVub20lMjBhbGllbiUyMG1vbnN0ZXJ8ZW58MXx8fHwxNzg0NjEzNTM4fDA&ixlib=rb-4.1.0&w=800&h=600&fit=crop&q=80" alt="Venom" onerror="this.onerror=null;this.src='https://picsum.photos/seed/venom/150/150'">
+              <div class="villain-title">
+                <h3>Venom</h3>
+                <span>Threat Level: Catastrophic</span>
+              </div>
+            </div>
+            <p>An alien symbiote bonded with Eddie Brock. Possesses immense strength, camouflage, and immunity to Spider-Sense.</p>
+            <div class="threat-meter">
+              <div class="threat-label">
+                <span>Destruction Index</span>
+                <span>98%</span>
+              </div>
+              <div class="threat-bar">
+                <div class="threat-fill" style="width: 98%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech & Gadgets (How it works) -->
+    <section id="tech" class="tech-section">
+      <div class="container">
+        <div class="section-intro">
+          <h2>Spidey Tech</h2>
+          <p>The science behind the heroics. How Peter Parker leverages engineering to keep the city safe.</p>
+        </div>
+        <div class="tech-steps">
+          <!-- Step 1 -->
+          <div class="tech-step">
+            <span class="step-number">01</span>
+            <div class="icon-badge">🎯</div>
+            <h3>Web Shooters</h3>
+            <p>Twin wrist-mounted devices that compress synthetic web-fluid at 300 psi. Capable of shooting lines, impact webbing, and web-bombs.</p>
+          </div>
+          <!-- Step 2 -->
+          <div class="tech-step">
+            <span class="step-number">02</span>
+            <div class="icon-badge">🧠</div>
+            <h3>Spider-Sense</h3>
+            <p>A natural precognitive warning system, amplified by the suit's neural interface, allowing for split-second dodge maneuvers.</p>
+          </div>
+          <!-- Step 3 -->
+          <div class="tech-step">
+            <span class="step-number">03</span>
+            <div class="icon-badge">📡</div>
+            <h3>Web-Net HUD</h3>
+            <p>A city-wide police scanner and emergency dispatch overlay projected directly onto the suit's eye lenses for real-time tracking.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quotes Section -->
+    <section class="quotes-section">
+      <div class="container">
+        <div class="section-intro">
+          <h2>Voices of New York</h2>
+          <p>What the citizens (and critics) are saying about our friendly neighborhood protector.</p>
+        </div>
+        <div class="quotes-grid">
+          <!-- Quote 1 -->
+          <div class="quote-card">
+            <p class="quote-text">He caught my runaway cat from a fire escape and then stopped a car thief on the same block. NYC is lucky to have him!</p>
+            <div class="quote-author">
+              <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixid=M3wxMDAzMDcxfDB8MXxzZWFyY2h8MXx8d29tYW4lMjBzbWlsaW5nfGVufDF8fHx8MTc4NDYxMzUzOHww&ixlib=rb-4.1.0&w=800&h=600&fit=crop&q=80" alt="Sarah J." onerror="this.onerror=null;this.src='https://picsum.photos/seed/sarah/100/100'">
+              <div class="author-info">
+                <h4>Sarah Jenkins</h4>
+                <p>Queens Resident</p>
+              </div>
+            </div>
+          </div>
+          <!-- Quote 2 -->
+          <div class="quote-card">
+            <p class="quote-text">A menace! A masked vigilante who causes millions in property damage! But... I suppose he did save my hover-copter last week.</p>
+            <div class="quote-author">
+              <img src="https://images.unsplash.com/photo-1609852234838-147db6815968?ixid=M3wxMDAzMDcxfDB8MXxzZWFyY2h8MXx8bWFuJTIwYW5ncnl8ZW58MXx8fHwxNzg0NjEzNTM5fDA&ixlib=rb-4.1.0&w=800&h=600&fit=crop&q=80" alt="J. Jonah Jameson" onerror="this.onerror=null;this.src='https://picsum.photos/seed/jonah/100/100'">
+              <div class="author-info">
+                <h4>J. Jonah Jameson</h4>
+                <p>Editor, The Daily Bugle</p>
+              </div>
+            </div>
+          </div>
+          <!-- Quote 3 -->
+          <div class="quote-card">
+            <p class="quote-text">The kid's got a big heart and some pretty neat engineering. He's doing the Stark legacy proud out there on the streets.</p>
+            <div class="quote-author">
+              <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixid=M3wxMDAzMDcxfDB8MXxzZWFyY2h8MXx8bWFuJTIwc3VpdHxlbnwxfHx8fDE3ODQ2MTM1NDB8MA&ixlib=rb-4.1.0&w=800&h=600&fit=crop&q=80" alt="Tony S." onerror="this.onerror=null;this.src='https://picsum.photos/seed/tony/100/100'">
+              <div class="author-info">
+                <h4>Tony Stark (AI)</h4>
+                <p>Mentor &amp; Tech Advisor</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Band -->
+    <section class="cta-band">
+      <div class="container">
+        <h2>Are You Ready to Swing in?</h2>
+        <p>Join the official Web-Net Fan Club today and get real-time NYC incident reports, comic releases, and exclusive content.</p>
+        <a href="#signup" class="btn">Join the Web-Net</a>
+      </div>
+    </section>
+
+    <!-- Join Form Section -->
+    <section id="join" class="join-section">
+      <div class="container">
+        <div class="join-grid">
+          <div class="join-info">
+            <h2>Get Emergency Alerts</h2>
+            <p>Sign up to receive real-time neighborhood updates. When a supervillain strikes, you'll be the first to know where to seek safety.</p>
+            <div class="contact-details">
+              <div class="contact-item">
+                <div class="icon-badge">📍</div>
+                <div class="contact-text">
+                  <h4>Headquarters</h4>
+                  <p>Forest Hills, Queens, NY</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="icon-badge">✉️</div>
+                <div class="contact-text">
+                  <h4>Emergency Contact</h4>
+                  <p>webnet-alerts@spidey-fan.org</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="join-form-wrapper">
+            <h3>Subscribe to Alerts</h3>
+            <form onsubmit="event.preventDefault();this.querySelector('button[type=submit]').textContent='✓ Subscribed — Spidey Out!'">
+              <div class="form-group">
+                <label for="join-name">Your Name</label>
+                <input type="text" id="join-name" class="form-control" placeholder="Peter Parker" required>
+              </div>
+              <div class="form-group">
+                <label for="join-email">Email Address</label>
+                <input type="email" id="join-email" class="form-control" placeholder="peter@dailybugle.com" required>
+              </div>
+              <div class="form-group">
+                <label for="join-borough">Borough</label>
+                <select id="join-borough" class="form-control">
+                  <option>Queens</option>
+                  <option>Manhattan</option>
+                  <option>Brooklyn</option>
+                  <option>The Bronx</option>
+                  <option>Staten Island</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Subscribe Now</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- --- SIGN IN PAGE --- -->
+  <main data-page="signin" class="page-route" hidden>
+    <div class="container">
+      <div class="auth-card">
+        <h1>Welcome Back</h1>
+        <form onsubmit="event.preventDefault();this.querySelector('button[type=submit]').textContent='✓ Done — demo'">
+          <div class="form-group">
+            <label for="signin-email">Email Address</label>
+            <input type="email" id="signin-email" class="form-control" placeholder="peter@dailybugle.com" required>
+          </div>
+          <div class="form-group">
+            <label for="signin-password">Password</label>
+            <input type="password" id="signin-password" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Sign In</button>
+        </form>
+        <p>Don't have an account? <a href="#signup">Sign up</a></p>
+      </div>
+    </div>
+  </main>
+
+  <!-- --- SIGN UP PAGE --- -->
+  <main data-page="signup" class="page-route" hidden>
+    <div class="container">
+      <div class="auth-card">
+        <h1>Create Account</h1>
+        <form onsubmit="event.preventDefault();this.querySelector('button[type=submit]').textContent='✓ Done — demo'">
+          <div class="form-group">
+            <label for="signup-name">Full Name</label>
+            <input type="text" id="signup-name" class="form-control" placeholder="Peter Parker" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-email">Email Address</label>
+            <input type="email" id="signup-email" class="form-control" placeholder="peter@dailybugle.com" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Create Account</button>
+        </form>
+        <p>Already have an account? <a href="#signin">Sign in</a></p>
+      </div>
+    </div>
+  </main>
+
+  <!-- --- FOOTER --- -->
+  <footer>
+    <div class="container">
+      <div class="foot-grid">
+        <div class="foot-col foot-brand">
+          <a href="#home" class="logo">🕷️ <span>SPIDER</span>-MAN</a>
+          <p>Defending New York City with courage, science, and a friendly smile. Join the Web-Net today.</p>
+        </div>
+        <div class="foot-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#suits">The Armory</a></li>
+            <li><a href="#villains">Active Threats</a></li>
+            <li><a href="#tech">Spidey Tech</a></li>
+          </ul>
+        </div>
+        <div class="foot-col">
+          <h4>Community</h4>
+          <ul>
+            <li><a href="#join">Join Fan Club</a></li>
+            <li><a href="#signup">Create Account</a></li>
+            <li><a href="#signin">Sign In</a></li>
+          </ul>
+        </div>
+        <div class="foot-col">
+          <h4>Follow Spidey</h4>
+          <div class="social-links">
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-icon">🐦</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon">📸</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-icon">🎥</a>
+          </div>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <p>&copy; 2026 Spider-Man Fan Club. All rights reserved. Built for fans, by fans.</p>
+        <p>Designed with 🕷️ in NYC</p>
+      </div>
+    </div>
+  </footer>
+
+<script id="__mintsite_link_interceptor__">(function(){if(window.__mintsiteLinkInterceptor)return;window.__mintsiteLinkInterceptor=true;function showPage(name){  var pages=document.querySelectorAll('[data-page]');  if(pages.length<2)return false;  var found=false;  for(var i=0;i<pages.length;i++){    var n=(pages[i].getAttribute('data-page')||'').toLowerCase();    if(n===name){pages[i].hidden=false;pages[i].style.display='';found=true}    else pages[i].hidden=true;  }  if(found)window.scrollTo({top:0,behavior:'smooth'});  return found;}document.addEventListener('click',function(e){  var a=e.target.closest&&e.target.closest('a');  if(!a)return;  var href=(a.getAttribute('href')||'').trim();  if(href.charAt(0)==='#'&&href.length>1){    e.preventDefault();    var id=href.slice(1).toLowerCase();    if(showPage(id))return;    var el=document.getElementById(id);    if(el){el.scrollIntoView({behavior:'smooth',block:'start'})}  } else if(href&&href!=='#'&&href.indexOf('javascript:')!==0){    e.preventDefault();    try{window.open(href,'_blank','noopener,noreferrer')}catch(_){}  }},true);})();</script>
+</body>
+</html>
